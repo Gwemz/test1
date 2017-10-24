@@ -21,6 +21,13 @@
 	    background-color: #fafafa;
 	    font-size: 14px;
 	}
+	#wrapper {
+		position:absolute; z-index:1;
+		top:40px; bottom:48px; left:0;
+		width:100%;
+		background:#aaa;
+		overflow:auto;
+	}
 </style>
 <body>
 	<input type="text" id="phoneBox_" value="" placeholder="请输入手机号码" abs="abs" readonly="readonly" unselectable="on" onfocus="this.blur()" style="background: rgb(235, 235, 228);">
@@ -73,13 +80,14 @@
 </body>
 <script src="./js/iscroll.js"></script>
 <script type="text/javascript">
+	// var myScroll = new IScroll('#wrapper');
 	var myScroll;
 	function loaded() {
 		myScroll = new iScroll('wrapper', { checkDOMChanges: true });			
-		setInterval(function () {
+		/*setInterval(function () {
 			if (myScroll.isReady())
 				document.getElementById('thelist').innerHTML += '<li>new row</li>';
-		}, 2000);
+		}, 2000);*/
 	}
 	document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
 	document.addEventListener('DOMContentLoaded', loaded, false);
