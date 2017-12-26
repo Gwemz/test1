@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test 3</title>
+</head>
+<style>
+    *{margin:0;padding:0;list-style:none;}
+    a{text-decoration:none;}
+    .container{width:600px;margin:50px auto 0px;height:200px;position:relative;}
+    .part{float:left;overflow:hidden;border:1px solid orangered;}
+    .part1,.part3{width:200px;height:200px;border-radius:50%;}
+    .part2{position:absolute;top:0;left:100px;width:400px;height:200px;border-left:0;border-right:0;background:#ffffff;}
+    .part3{float:right;}
+    .point{position:absolute;transform:translate(90px,190px);width:20px;height:20px;border-radius:50%;background: #00b33b;}
+    .point{animation: line 4s linear 1;}
+    @keyframes line {
+        0% {
+            transform:translate(90px,190px)
+        }
+        25%{
+            transform:translate(490px,190px)
+        }
+        50%{
+            transform:translate(490px,-10px)
+        }
+        75%{
+            transform:translate(90px,-10px)
+        }
+        100%{
+            transform:translate(90px,190px)
+        }
+    }
+    .box{
+        width:500px;
+        height:250px;
+        background:purple;
+        margin: 50px auto;
+    }
+    /*.circle{width:50px;height: 50px;border-radius:50%;background: #000;animation:round 2s linear infinite;}*/
+    @keyframes round {
+        from{
+            transform:translate(225px,100px) rotate(0deg) translate(225px,100px)
+        }
+        to{
+            transform:translate(225px,100px) rotate(360deg) translate(225px,100px)
+        }
+    }
+</style>
+<body>
+<div class="container">
+    <div class="part part1"></div>
+    <div class="part part2"></div>
+    <div class="part part3"></div>
+    <div class="point animate">
+
+    </div>
+</div>
+<div class="box">
+    <div class="circle">
+
+    </div>
+</div>
+
+</body>
+</html>
