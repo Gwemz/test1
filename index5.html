@@ -9,21 +9,22 @@
             width: 80px;
             height: 80px;
             font-size: 80px;
-            animation: action 0.2s linear infinite;
+            background: url("./car.png") center center no-repeat;
+            animation: action 2s linear infinite;
         }
 
         @keyframes action {
             from {
-                transform: rotate(0deg) translate(200px,60px) rotate(0deg);
+                transform: rotate(90deg) translate(200px,60px);
             }
             to {
-                transform: rotate(360deg) translate(200px,60px) rotate(-360deg);
+                transform: rotate(270deg) translate(200px,60px);
             }
         }
     </style>
 </head>
 <body>
-<div class="smile">☺</div>
+<div class="smile"></div>
 </body>
 <script type="text/javascript">
     /*for (var i=0;i<5;i++) {
