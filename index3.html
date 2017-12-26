@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="content-Type" content="text/html" charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<link rel="stylesheet" href="./css/businessTemplates.css">
+<link rel="stylesheet" href="./base/css/reset.css">
+<title>商业模板</title>
+<script src="http://static.hx2cars.com/resource/web/gbpage/js/common/jquery.min.js"></script>
+<script src="http://static.hx2cars.com/resource/web/gbpage/js/common/lazyload.js"></script>
+<script type="text/javascript" src="./js/iscroll.js"></script>
+<script type="text/javascript">
+var myScroll,
+pullDownEl, pullDownOffset,
+pullUpEl, pullUpOffset,
+generatedCount = 0,
+i = 0;
+function loaded() {
+pullDownEl = document.getElementById('pullDown');
+pullDownOffset = pullDownEl.offsetHeight;
+pullUpEl = document.getElementById('pullUp');
+pullUpOffset = pullUpEl.offsetHeight;
+myScroll = new iScroll('wrapper', {
+topOffset: pullDownOffset,
+onRefresh: function() {
+if(pullDownEl.className.match('loading')) {
+pullDownEl.className = '';
+pullDownEl.querySelector('.pullDownLabel').innerHTML = '下拉刷新';
+} else if(pullUpEl.className.match('loading')) {
+pullUpEl.className = '';
+pullUpEl.querySelector('.pullUpLabel').innerHTML = '上拉加载更多';
+}
+},
+onScrollMove: function() {
+if(this.y > 5 && !pullDownEl.className.match('flip')) {
+pullDownEl.className = 'flip';
+pullDownEl.querySelector('.pullDownLabel').innerHTML = '松开刷新';
+this.minScrollY = 0;
+} else if(this.y < 5 && pullDownEl.className.match('flip')) {
+pullDownEl.className = '';
+pullDownEl.querySelector('.pullDownLabel').innerHTML = '下拉刷新';
+this.minScrollY = -pullDownOffset;
+} else if(this.y < (this.maxScrollY - 10) && !pullUpEl.className.match('flip')) {
+pullUpEl.className = 'flip';
+pullUpEl.querySelector('.pullUpLabel').innerHTML = '松开刷新';
+this.maxScrollY = this.maxScrollY;
+} else if(this.y > (this.maxScrollY + 10) && pullUpEl.className.match('flip')) {
+pullUpEl.className = '';
+pullUpEl.querySelector('.pullUpLabel').innerHTML = '上拉加载更多';
+this.maxScrollY = pullUpOffset;
+}
+},
+onScrollEnd: function() {
+if(pullDownEl.className.match('flip')) {
+pullDownEl.className = 'loading';
+pullDownEl.querySelector('.pullDownLabel').innerHTML = '加载中';
+pullDownAction(); // Execute custom function (ajax call?)
+} else if(pullUpEl.className.match('flip')) {
+pullUpEl.className = 'loading';
+pullUpEl.querySelector('.pullUpLabel').innerHTML = '加载中';
+pullUpAction(); // Execute custom function (ajax call?)
+}
+}
+});
+setTimeout(function() {
+document.getElementById('wrapper').style.left = '0';
+}, 800);
+}
+document.addEventListener('touchmove', function(e) {
+e.preventDefault();
+}, false);
+document.addEventListener('DOMContentLoaded', function() {
+}, false);
+function pullDownAction() {
+window.location.reload();
+myScroll.refresh(); // <-- Simulate network congestion, remove setTimeout from production!
+}
+function pullUpAction() {
+var page = i++; // 每上拉一次页码加一次 （就比如下一页下一页）
+Ajax(i); // 运行ajax 把2传过去告诉后台我上拉一次后台要加一页数据（当然 这个具体传什么还得跟后台配合）
+myScroll.refresh(); // <-- Simulate network congestion, remove setTimeout from production!
+}
+function Ajax(page) { // ajax后台交互
+var pages;
+page ? pages = page : 0;
+$.ajax({
+type: "post",
+//                  dataType: "JSON",
+url: "getjson.php", // 你请求的地址
+data: {
+'page': pages // 传过去的页码
+},
+success: function(data) {
+var data = {
+status: 0,
+datagroup: [{
+src: 'images/dog2.jpg',
+tpid: '10001'
+}, {
+src: 'images/dog2.jpg',
+tpid: '10002'
+}, {
+src: 'images/dog2.jpg',
+tpid: '10003'
+}, {
+src: 'images/dog2.jpg',
+tpid: '10004'
+}
+]
+}
+if(data.status) {
+/*添加节点*/
+$.each(data.datagroup, function(key, val) {
+var domli = '<li class="sim-showbox" style="display:none;"><img  data-original="'+val.src+'" data-tpid="' + val.tpid + '" class="sim-show-img lazy"  /></li>';
+$(domli).appendTo($("#scroller ul")).fadeIn(600);
+});
+/*延迟加载*/
+$("img.lazy").lazyload({
+threshold : 2000
+});
+/*刷新插件*/
+myScroll.refresh();
+} else {
+$('.pullUpLabel').html('亲，没有更多内容了！');
+}
+},
+error: function() {
+}
+});
+}
+</script>
+<style type="text/css">
+* {
+-webkit-box-sizing: border-box;
+-moz-box-sizing: border-box;
+box-sizing: border-box;
+}
+html {
+-ms-touch-action: none;
+}
+body,
+ul,
+li {
+padding: 0;
+margin: 0;
+border: 0;
+}
+body {
+font-size: 12px;
+font-family: "微软雅黑";
+overflow: hidden;
+background: #F5F5F5;
+/* this is important to prevent the whole page to bounce */
+}
+#header {
+position: absolute;
+z-index: 2;
+top: 0;
+left: 0;
+width: 100%;
+height: 45px;
+line-height: 45px;
+padding: 0;
+color: #eee;
+font-size: 20px;
+text-align: center;
+font-weight: bold;
+}
+#wrapper {
+position: absolute;
+z-index: 1;
+top: 0px;
+bottom: 13.33vw;
+left: 0;
+width: 100%;
+overflow: hidden;
+}
+#scroller {
+position: absolute;
+z-index: 1;
+-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+width: 100%;
+-webkit-transform: translateZ(0);
+-moz-transform: translateZ(0);
+-ms-transform: translateZ(0);
+-o-transform: translateZ(0);
+transform: translateZ(0);
+-webkit-touch-callout: none;
+-webkit-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+-webkit-text-size-adjust: none;
+-moz-text-size-adjust: none;
+-ms-text-size-adjust: none;
+-o-text-size-adjust: none;
+text-size-adjust: none;
+}
+#scroller ul {
+list-style: none;
+padding: 0;
+margin: 0;
+width: 100%;
+text-align: left;
+overflow: hidden;
+}
+#scroller li {
+display: block;
+width: 50%;
+height: calc(88.93vw - 35.57px);
+float: left;
+box-sizing: border-box;
+padding: 10px 10px 0px;
+position: relative;
+}
+/*footer*/
+.footer-box {
+height: 13.33vw;
+width: 100%;
+background: #FFFFFF;
+position: absolute;
+left: 0;
+bottom: 0;
+}
+.footer-box .foot-sim-box {
+float: left;
+height: 100%;
+width: calc( 100% / 3);
+box-sizing: border-box;
+border-right: 1px solid #DDDDDD;
+text-align: center;
+line-height: 13.33vw;
+color: #333333;
+font-size: 1.067rem;
+}
+.footer-box .foot-sim-box a {
+color: inherit;
+text-decoration: none;
+}
+.footer-box .foot-sim-box:last-child {
+border: none;
+clear: right;
+}
+.active {
+color: #F15B5C !important;
+}
+.active::before {
+content: '';
+display: inline-block;
+width: 0;
+height: 0;
+border-style: solid;
+border-width: 4.05px 0 4.05px 7.0px;
+border-color: transparent transparent transparent #f15b5b;
+}
+.active::after {
+content: '';
+display: inline-block;
+width: 0;
+height: 0;
+border-style: solid;
+border-width: 4.05px 7.0px 4.05px 0;
+border-color: transparent #f15b5b transparent transparent;
+}
+.sim-showbox .sim-show-img {
+display: block;
+height: 100%;
+width: 100%;
+}
+.sim-showbox .fingle-ico {
+position: absolute;
+z-index: 10;
+width: 11.5vw;
+height: auto;
+left: 50%;
+top: 50%;
+transform: translate(-50%, -50%);
+-webkit-transform: translate(-50%, -50%);
+-moz-transform: translate(-50%, -50%);
+-ms-transform: translate(-50%, -50%);
+}
+/*闪烁动画*/
+.light-ani {
+-webkit-animation: light-a 1s linear infinite alternate;
+-o-animation: light-a 1s linear infinite alternate;
+animation: light-a 1s linear infinite alternate;
+}
+@keyframes light-a {
+0% {
+opacity: 1;
+}
+100% {
+opacity: 0.4;
+}
+}
+@-webkit-keyframes light-a {
+0% {
+opacity: 1;
+}
+100% {
+opacity: 0.4;
+}
+}
+#pullDown,#pullUp{
+width: 100%;
+text-align: center;
+color: #333333;
+line-height: 2;
+margin: 5px auto;
+}
+.ad-block-img{
+display: block;
+width: 100%;
+height: auto;
+}
+</style>
+</head>
+<body>
+<div id="wrapper">
+<div id="scroller">
+<div id="pullDown">
+<span class="pullDownIcon"></span><span class="pullDownLabel">下拉刷新</span>
+</div>
+<ul>
+<li class="sim-showbox">
+<img class="sim-show-img lazy" data-original="images/templates/templates-0.jpg"  data-tpid='10001' />
+<img  class="fingle-ico light-ani lazy" data-original="images/fingle-ico.png" />
+</li>
+<li class="sim-showbox"><img  class="sim-show-img lazy" data-original="images/templates/templates-1.jpg"  data-tpid='10001' /></li>
+<li class="sim-showbox"><img  class="sim-show-img lazy" data-original="images/templates/templates-2.jpg"  data-tpid='10001' /></li>
+<li class="sim-showbox"><img  class="sim-show-img lazy" data-original="images/templates/templates-3.jpg"  data-tpid='10001' /></li>
+<li class="sim-showbox"><img  class="sim-show-img lazy" data-original="images/templates/templates-4.jpg"  data-tpid='10001' /></li>
+<li class="sim-showbox"><img  class="sim-show-img lazy" data-original="images/templates/templates-5.jpg"  data-tpid='10001' /></li>
+<li class="sim-showbox"><img  class="sim-show-img lazy" data-original="images/templates/templates-6.jpg"  data-tpid='10001' /></li>
+<li class="sim-showbox"><img  class="sim-show-img lazy" data-original="images/templates/templates-7.jpg"  data-tpid='10001' /></li>
+<li class="sim-showbox"><img  class="sim-show-img lazy" data-original="images/templates/templates-8.jpg"  data-tpid='10001' /></li>
+<li class="sim-showbox"><img  class="sim-show-img lazy" data-original="images/templates/templates-9.jpg"  data-tpid='10001' /></li>
+<li class="sim-showbox"><img  class="sim-show-img lazy" data-original="images/templates/templates-10.jpg"  data-tpid='10001' /></li>
+<li class="sim-showbox"><img  class="sim-show-img lazy" data-original="images/templates/templates-11.jpg"  data-tpid='10001' /></li>
+<li class="sim-showbox"><img  class="sim-show-img lazy" data-original="images/templates/templates-12.jpg"  data-tpid='10001' /></li>
+</ul>
+<div id="pullUp">
+<span class="pullUpIcon"></span><span class="pullUpLabel">上拉加载更多...</span>
+</div>
+<img src="./images/ad-banner.png" class="ad-block-img"/>
+</div>
+</div>
+<div class="footer-box">
+<div class="foot-sim-box active">
+<a href="businessTemplates.html">商品模板</a>
+</div>
+<div class="foot-sim-box">
+<a href="figure.html">神配图</a>
+</div>
+<div class="foot-sim-box">
+<a href="myTemplates.html">我的模板</a>
+</div>
+</div>
+</body>
+<script type="text/javascript" src="base/js/reset-font.js"></script>
+<script>
+$(function() {
+$("img.lazy").lazyload({
+threshold : 2000
+});
+setTimeout(loaded, 200);
+$("#scroller ul").on('click','li img', function() {
+var tpid = $(this).data('tpid');
+if(tpid != '' && tpid != undefined) {
+window.location.href = 'templates/home.html?tpid=' + tpid;
+} else {
+/*沒有模板ID，无法跳转*/
+}
+})
+})
+</script>
+</html>

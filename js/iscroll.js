@@ -89,7 +89,7 @@ var m = Math,
 		that.wrapper.style.overflow = 'hidden';
 		that.scroller = that.wrapper.children[0];
 
-		// Default options
+		// Default.vue options
 		that.options = {
 			hScroll: true,
 			vScroll: true,
