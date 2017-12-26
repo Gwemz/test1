@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style type="text/css">
+        .smile{
+            margin:190px auto;
+            width: 80px;
+            height: 80px;
+            font-size: 80px;
+            animation: action 0.2s linear infinite;
+        }
+
+        @keyframes action {
+            from {
+                transform: rotate(0deg) translate(200px,60px) rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg) translate(200px,60px) rotate(-360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="smile">☺</div>
+</body>
+<script type="text/javascript">
+    /*for (var i=0;i<5;i++) {
+        setTimeout(()=>{
+            console.log(i)
+        },1000*i)
+    }*/
+</script>
+</html>
