@@ -41,16 +41,14 @@
     <div class="swiper-container swiper-container-horizontal">
         <div class="swiper-wrapper">
             <div class="swiper-slide blue-slide">
-                <p class="ani" swiper-animate-effect="fadeInUp" swiper-animate-duration="0.5s" swiper-animate-delay="0.3s">内容一</p>
+                <a class="ani" swiper-animate-effect="flipInY" swiper-animate-duration="0.5s" swiper-animate-delay="0s">内容一</a>
+                <!--<a class="ani" swiper-animate-effect="bounceInDown" swiper-animate-duration="0.5s" swiper-animate-delay="0s">内容四</a>-->
             </div>
             <div class="swiper-slide red-slide">
-                <p class="ani" swiper-animate-effect="bounceInLeft" swiper-animate-duration="0.5s" swiper-animate-delay="0.3s">内容二</p>
+                <p class="ani" swiper-animate-effect="bounceInLeft" swiper-animate-duration="0.5s" swiper-animate-delay="0s">内容二</p>
             </div>
             <div class="swiper-slide orange-slide">
                 <p class="ani" swiper-animate-effect="shake" swiper-animate-duration="0.5s" swiper-animate-delay="0s">内容三</p>
-            </div>
-            <div class="swiper-slide orange-slide">
-                <p class="ani" swiper-animate-effect="bounceOutDown" swiper-animate-duration="0.5s" swiper-animate-delay="0s">内容三</p>
             </div>
         </div>
     </div>
@@ -61,7 +59,8 @@
     var mySwiper = new Swiper ('.swiper-container', {
         on:{
             init: function(){
-                swiperAnimateCache(this); //隐藏动画元素
+                console.log(this);
+                //swiperAnimateCache(this); //隐藏动画元素
                 swiperAnimate(this); //初始化完成开始动画
             },
             slideChangeTransitionEnd: function(){
