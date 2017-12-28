@@ -24,10 +24,14 @@
     }
     @keyframes banjin {
         0%{
-            transform:translate(490px,190px) rotate(90deg) translate(490px,90px)
+            transform-origin:490px 190px;
+            transform:rotate(270deg);
+            /*transform:translate(490px,190px) rotate(90deg) translate(490px,90px)*/
         }
         100%{
-            transform:translate(490px,190px) rotate(-90deg) translate(490px,90px)
+            transform-origin:490px 190px;
+            transform:rotate(90deg);
+            /*transform:translate(490px,190px) rotate(-90deg) translate(490px,90px)*/
         }
     }
     @keyframes line2 {
